@@ -1,0 +1,1 @@
+Este proyecto es fue un trabajo práctico, la idea era crear un programa que arme bases de datos donde se registren diferentes tipos de equipos de medicina, creo que podría haber pulido más el trabajo, pero fue el pié para comenzar nuevos proyectos con bases de datos. En estos pretendo corregir todo lo que vi mal en este.
