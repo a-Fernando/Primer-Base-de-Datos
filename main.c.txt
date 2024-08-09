@@ -1,0 +1,65 @@
+/*!
+ * @file    main.c
+ * @brief   Se presenta un menú donde permite al usuario elegir que opción quiere. Una vez seleccionada la opción, se ingresa a la función
+ * @author  Fernando Almaraz <almaraz.fernando.m@gmail.com>
+ * @date    08-08-24
+ */
+
+#include "funciones.h"
+#include <stdio.h>
+
+int main() {
+  equipamiento *Inicio = NULL;
+  int id = 0, sku, cantidad, especialidad, eleccion = 1, filtro;
+  char descripcion[20], detalles[200];
+  while (eleccion != 0) {
+      printf("1)Ingresar\n2)Modificar\n3)Eliminar\n4)Mostrar datos\n5)Mostrar "
+             "datos de una especialidad especifica\n0)Salir\n");
+      scanf("%d", &eleccion);
+
+      switch (eleccion) {
+          case 1:
+              agregarEquipo(&Inicio, id);
+              id++;
+              break;
+          case 2:
+              if (Inicio != NULL) {
+                  printf("ingrese el sku que desea modificar\n");
+                  scanf("%d", &sku);
+                  modificarEquipo(sku, Inicio);
+              }
+              break;
+          case 3:
+              if (Inicio != NULL) {
+                  printf("ingrese el sku que desea eliminar\n");
+                  scanf("%d", &sku);
+                  eliminarEquipo(sku, &Inicio);
+              }
+              break;
+          case 4:
+              if (Inicio != NULL) {
+                  printf("%d\n", Inicio->sku);
+                  mostrarEquipo(&Inicio);
+              }
+              break;
+          case 5:
+              if (Inicio != NULL) {
+                  printf("Ingrese la especialidad:\n");
+                  scanf("%d", &filtro);
+                  mostrarEquipoFiltrado(&Inicio, filtro);
+              }
+              break;
+          case 0:
+              if (Inicio != NULL) {
+                  guardarArchivo(&Inicio);
+              }
+              break;
+          default:
+              if (Inicio == NULL) {
+                  printf("Debe ingresar un dato\n");
+              }
+              break;
+      }
+  }
+  return 0;
+}

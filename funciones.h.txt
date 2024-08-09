@@ -1,0 +1,118 @@
+/*!
+ * @file    funciones.h
+ * @brief  header de la funcion en c
+ * @author  Fernando Almaraz <falmaraz@frba.utn.edu.ar>
+ * @date    23-05-24
+ */
+#ifndef FUNCIONES_H_
+#define FUNCIONES_H_
+
+// Borrá la función foo y reemplazala con la solución al ejercicio.
+// No te olvides de modificar la documentación también!
+
+/*!
+ * @brief Ejemplo de implementación de una función.
+ *
+ * @param "x" primer numero ingresado, "y" segundo numero ingresado, "resultado" resultado del promedio.
+ * @return No devuelve nada porque la función es void.
+ */
+void promedio(int x, int y, float* resultado);
+
+
+#define Cardiología 1
+#define Clínica 2
+#define Gastroenterología 3
+#define Cirugía 4
+#define Dermatología 5
+#define Oftalmología 6
+#define Traumatología 7
+
+typedef struct equipamiento
+{
+    int id;
+    int sku;
+    char descripcion [20];
+    char detalles [200];
+    int cantidad;
+    int especialidad;
+    struct equipamiento *siguiente;
+} equipamiento;
+
+/*!
+ * @brief Ejemplo de implementación de agregarEquipo.
+ *
+ * @param "Equipamiento **" Dirección de memoria que apunta al inicio de la lista de estructuras, "id" es el id del equipo ingresado.
+ * @return No devuelve nada porque la función es void.
+ */
+
+int agregarEquipo(equipamiento **, int id);
+
+/*!
+ * @brief Ejemplo de implementación de modificarEquipo.
+ *
+ * @param "sku" sku del equipo a modificar, "equipamiento" dirección de la estructura a modificar.
+ * @return 0.
+ */
+
+int modificarEquipo(int sku, equipamiento*);
+
+/*!
+ * @brief Ejemplo de implementación de eliminarEquipo.
+ *
+ * @param "sku" sku del equipo a eliminar, "equipamiento**" Dirección de memoria que apunta a la lista de estructuras.
+ * @return 0.
+ */
+
+int eliminarEquipo(int sku, equipamiento**);
+
+/*!
+ * @brief Ejemplo de implementación de mostrarEquipo.
+ *
+ * @param "equipamiento**" Dirección de memoria que apunta a la lista de estructuras.
+ * @return 0.
+ */
+
+void mostrarEquipo(equipamiento **Inicio);
+
+/*!
+ * @brief Ejemplo de implementación de guardarArchivo.
+ *
+ * @param "equipamiento**" Dirección de memoria que apunta a la lista de estructuras.
+ * @return 0.
+ */
+
+void guardarArchivo(equipamiento **Inicio);
+
+/*!
+ * @brief Ejemplo de implementación de obtenerTiempo.
+ *
+ * @param "*Fecha" dirección de memoria de la fecha a modificar.
+ * @return 0.
+ */
+char *obtenerTiempo(char *Fecha);
+
+/*!
+ * @brief Ejemplo de implementación de sacarEnter.
+ *
+ * @param "*String" Dirección de memoria del string a sacar enter.
+ * @return 0.
+ */
+void sacarEnter(char *String);
+
+/*!
+ * @brief Ejemplo de implementación de ingresarDatos.
+ *
+ * @param "**Equipo" Equipo es la direccón de memoria de la estructura donde se ingresaran los datos.
+ * @return 0.
+ */
+void ingresarDatos(equipamiento **Equipo);
+
+/*!
+ * @brief Ejemplo de implementación de mostrarEquipoFiltrado.
+ *
+ * @param "**Equipo" Equipo es la direccón de memoria de la estructura donde se ingresaran los datos, "filtro" es el sku con el que se filtra la información.
+ * @return 0.
+ */
+void mostrarEquipoFiltrado(equipamiento **, int filtro; //filtro es sku
+
+#endif // FUNCIONES_H_

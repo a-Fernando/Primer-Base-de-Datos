@@ -1,0 +1,170 @@
+/*!
+ * @file    funciones.c
+ * @brief   Se calcula el promedio de los valores ingresados en el main
+ * @author  Fernando Almaraz <almaraz.fernando.m@gmail.com>
+ * @date    23-05-24
+ */
+
+#include "funciones.h"
+#include <stdio_ext.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+int agregarEquipo(equipamiento **Inicio, int id) {
+  int sku, cantidad, especialidad;
+  char descripcion[20], detalles[200];
+  equipamiento *nuevoEquipo, *aux;
+  nuevoEquipo = (equipamiento *)malloc(sizeof(equipamiento));
+  nuevoEquipo->id = id;
+  if (nuevoEquipo != NULL) {
+    ingresarDatos(&nuevoEquipo);
+    nuevoEquipo->siguiente = NULL;
+    if (*Inicio == NULL) {
+      *Inicio = nuevoEquipo;
+      (*Inicio)->id = 1;
+    } else {
+      aux = *Inicio;
+      while (aux->siguiente != NULL) {
+        aux = aux->siguiente;
+      }
+      aux->siguiente = nuevoEquipo;
+    }
+  }
+  return 0;
+}
+
+int modificarEquipo(int sku, equipamiento *Inicio) {
+  int i = 0;
+  char aux_c[200];
+  printf("Entro en la función modificarEquipo\n");
+  equipamiento *aux = NULL;
+  printf("Los datos guardados son: \nDescripción:%s \nDetalles:%s \nSKU:%d "
+         "\nCantidad:%d\n",
+         (Inicio)->descripcion, (Inicio)->detalles, (Inicio)->sku,
+         (Inicio)->cantidad);
+  while ((Inicio)->siguiente != NULL) {
+    printf("Buscando el sku indicado\n");
+    Inicio = (Inicio)->siguiente;
+  }
+  if (Inicio != NULL && (Inicio)->sku == sku) {
+    ingresarDatos(&Inicio);
+  }
+  if (Inicio != NULL && (Inicio)->sku != sku) {
+    printf("No hay datos cargados con el sku indicado\n");
+  }
+  return 0;
+}
+
+int eliminarEquipo(int sku, equipamiento **Inicio) {
+  equipamiento *aux = *Inicio, *anterior = NULL;
+  if ((*Inicio)->sku == sku) {
+    (*Inicio) = (*Inicio)->siguiente;
+    free(aux);
+  } else {
+    while (aux != NULL) {
+      if (aux->sku == sku) {
+        anterior->siguiente = aux->siguiente;
+        free(aux);
+      }
+      anterior = aux;
+      aux = aux->siguiente;
+    }
+  }
+  return 0;
+}
+
+void mostrarEquipo(equipamiento **Inicio) {
+  equipamiento *aux = *Inicio;
+  while (aux->siguiente != NULL) {
+    printf("Los datos guardados son: \nDescripción:%s \nDetalles:%s \nSKU:%d "
+           "\nCantidad:%d\n",
+           (aux)->descripcion, (aux)->detalles, (aux)->sku, (aux)->cantidad);
+    aux = aux->siguiente;
+  }
+  if (aux->siguiente == NULL) {
+    printf("Los datos guardados son: \nDescripción:%s \nDetalles:%s \nSKU:%d "
+           "\nCantidad:%d\n",
+           (aux)->descripcion, (aux)->detalles, (aux)->sku, (aux)->cantidad);
+  }
+}
+
+void mostrarEquipoFiltrado(equipamiento **Inicio, int filtro) {
+  equipamiento *aux = *Inicio;
+  while (aux != NULL) {
+    if (aux->especialidad == filtro) {
+      printf("Los datos guardados son: \nDescripción:%s \nDetalles:%s \nSKU:%d "
+             "\nCantidad:%d\n",
+             (aux)->descripcion, (aux)->detalles, (aux)->sku, (aux)->cantidad);
+    }
+    aux = aux->siguiente;
+  }
+}
+
+void guardarArchivo(equipamiento **Inicio) {
+  equipamiento *aux = *Inicio;
+  char bDatos[100], fecha[100];
+  int buf = 100;
+  obtenerTiempo(fecha);
+  printf("Ingrese el nombre de la base de datos: ");
+  scanf("%s", bDatos);
+  FILE *archivo;
+  archivo = fopen(bDatos, "a");
+  while (aux != NULL) {
+    fprintf(archivo, "%s,", fecha);
+    fprintf(archivo, "%d,", aux->sku);
+    fprintf(archivo, "%s,", aux->descripcion);
+    fprintf(archivo, "%s,", aux->detalles);
+    fprintf(archivo, "%d,", aux->cantidad);
+    if (aux == NULL) {
+      fprintf(archivo, "%d", aux->especialidad);
+    } else {
+      fprintf(archivo, "%d\n", aux->especialidad);
+    }
+
+    aux = aux->siguiente;
+  }
+  fclose(archivo);
+}
+
+char *obtenerTiempo(char *fecha) {
+  char *formato = "%Y-%d-%m";
+  time_t tiempo = time(NULL);
+  struct tm tiempoLocal = *localtime(&tiempo);
+  strftime(fecha, sizeof(fecha) * 2, formato, &tiempoLocal);
+  return fecha;
+}
+
+void sacarEnter(char *String) {
+  int i = 0;
+  while (String[i] != '\0') {
+    if (String[i] == '\n') {
+      String[i] = '\0';
+    }
+    i++;
+  }
+}
+
+void ingresarDatos(equipamiento **Equipo) {
+  printf("El ID asignado es:%d \n", (*Equipo)->id);
+  printf("Ingrese el SKU\n");
+  scanf("%d", &((*Equipo)->sku));
+
+  printf("Ingrese la Descripción\n");
+  fgetc(stdin);
+  fgets((*Equipo)->descripcion, sizeof(char) * 20, stdin);
+  sacarEnter((*Equipo)->descripcion);
+
+  printf("Ingrese la Cantidad\n");
+  scanf("%d", &((*Equipo)->cantidad));
+
+  printf("Ingrese los detalles\n");
+  fgetc(stdin);
+  fgets((*Equipo)->detalles, sizeof(char) * 200, stdin);
+  sacarEnter((*Equipo)->detalles);
+
+  printf("Ingrese la Especialidad\n");
+  scanf("%d", &((*Equipo)->especialidad));
+  printf("El programa guardó el %s %s en %d exitosamente\n",
+         (*Equipo)->descripcion, (*Equipo)->detalles, (*Equipo)->especialidad);
+}
